@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const Temperatura = require("./models/Temperaturas.js");
 
 const secretKey = "your-secret-key";
 

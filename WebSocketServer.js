@@ -1,10 +1,12 @@
 const express = require("express");
 const WebSocket = require("ws");
 const axios = require("axios");
+const connection = require("./db");
 
 const app = express();
 const port = 8080;
 const wss = new WebSocket.Server({ server: app.listen(port) });
+connection();
 
 wss.on("connection", (ws) => {
   ws.on("message", async (message) => {
