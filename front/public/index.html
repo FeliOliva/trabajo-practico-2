@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script>
+      async function fetchTemperatures() {
+        try {
+          const username = "felipe";
+          const password = "4321";
+          const loginResponse = await fetch("http://localhost:4000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
+          });
+
+          if (!loginResponse.ok) {
+            throw new Error("Error en la autenticación");
+          }
+
+          const { token } = await loginResponse.json();
+
+          const temperatureResponse = await fetch(
+            "http://localhost:4000/temperatures",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!temperatureResponse.ok) {
+            throw new Error("Error al obtener las temperaturas");
+          }
+
+          const temperatureData = await temperatureResponse.json();
+          displayTemperatures(temperatureData);
+        } catch (error) {
+          console.error("Error fetching temperatures:", error);
+        }
+      }
+
+      function displayTemperatures(temperatures) {
+        const root = document.getElementById("root");
+
+        // Renderizar la aplicación de React
+        ReactDOM.render(
+          React.createElement(App, { temperatures: temperatures }),
+          root
+        );
+      }
+
+      fetchTemperatures();
+    </script>
+  </body>
+</html>

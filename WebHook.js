@@ -11,9 +11,18 @@ connection();
 
 app.post("/webhook", async (req, res) => {
   const { temperature, timestamp } = req.body;
-  const newTemperature = new Temperature({ temperature, timestamp });
-  await newTemperature.save();
-  res.status(200).send("Datos guardados exitosamente");
+  const newTemperature = new Temperature({
+    temperatura: temperature,
+    horario: new Date(timestamp),
+  });
+
+  try {
+    await newTemperature.save();
+    res.status(200).send("Datos guardados exitosamente");
+  } catch (error) {
+    console.error("Error al guardar los datos en MongoDB:", error);
+    res.status(500).send("Error al guardar los datos en MongoDB");
+  }
 });
 
 app.listen(port, () => {
