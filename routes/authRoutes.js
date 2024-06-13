@@ -15,7 +15,7 @@ router.post("/login", async (req, res) => {
       .json({ error: "Se requieren nombre de usuario y contraseña" });
   }
 
-  if (username === "felipe" && password === "4321") {
+  if (username === "nahuel" && password === "54321") {
     const token = generateToken({ username });
     res.json({ token });
   } else {
